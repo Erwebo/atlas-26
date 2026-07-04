@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Informe financiero · EZ Play · 1er semestre 2026</title>
+<style>
+  :root{
+    --bg:#0C0B0D; --card:#18151A; --card2:#1F1B21; --line:#2C262E;
+    --ink:#F5F1F0; --ink2:#A79BA0; --ink3:#7A6F75;
+    --red:#D3242C; --red-bar:#E8474E; --red-soft:#3A1518;
+    --good:#4CBF82; --good-bg:#12291D; --warn:#E0A93E; --warn-bg:#2E2410;
+    --hi:#E8474E; --hi-bg:#33161A;
+    --blue:#3987e5; --blue-soft:#12212F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none !important} }
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+    font-size:16px; line-height:1.6;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px 80px}
+
+  /* ---------- header ---------- */
+  header{padding:64px 0 40px; border-bottom:1px solid var(--line)}
+  .eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red-bar); margin-bottom:14px;
+  }
+  h1{
+    font-style:italic; font-weight:800; text-transform:uppercase;
+    font-size:clamp(40px,7vw,64px); line-height:1.02; letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  h1 .thin{color:var(--ink2); font-weight:700}
+  .sub{margin-top:16px; color:var(--ink2); font-size:15px}
+  .sub b{color:var(--ink); font-weight:600}
+
+  /* ---------- sections ---------- */
+  section{padding:44px 0; border-bottom:1px solid var(--line)}
+  h2{
+    font-style:italic; font-weight:800; text-transform:uppercase;
+    font-size:24px; letter-spacing:.01em; margin-bottom:6px; text-wrap:balance;
+  }
+  .kicker{font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--ink3); margin-bottom:8px}
+  .lede{color:var(--ink2); max-width:62ch; margin-bottom:24px}
+  .lede b, .card p b{color:var(--ink); font-weight:600}
+  p + p{margin-top:10px}
+
+  /* ---------- stat tiles ---------- */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:28px}
+  .tile{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 18px 16px}
+  .tile .n{
+    font-size:34px; font-weight:800; font-style:italic; letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums; line-height:1.1;
+  }
+  .tile .l{font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink3); margin-top:6px}
+  .tile .d{font-size:13px; color:var(--ink2); margin-top:6px; line-height:1.45}
+  .tile.flag{border-color:#4a2328; background:linear-gradient(180deg,var(--card),var(--red-soft))}
+  .tile.flag .n{color:var(--red-bar)}
+  .tile.ok .n{color:var(--good)}
+
+  /* ---------- chips ---------- */
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    padding:4px 10px; border-radius:999px; white-space:nowrap;
+  }
+  .chip::before{content:""; width:7px; height:7px; border-radius:50%; background:currentColor}
+  .chip.good{color:var(--good); background:var(--good-bg)}
+  .chip.warn{color:var(--warn); background:var(--warn-bg)}
+  .chip.hi{color:var(--hi); background:var(--hi-bg)}
+
+  /* ---------- chart card ---------- */
+  .chart{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; margin-top:24px}
+  .chart h3{font-size:15px; font-weight:700; margin-bottom:2px}
+  .chart .note{font-size:13px; color:var(--ink2); margin-bottom:20px}
+  .legendrow{display:flex; gap:16px; margin-top:14px; font-size:12.5px; color:var(--ink3); flex-wrap:wrap}
+  .sw{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  /* ---------- column chart (ingresos vs gastos) ---------- */
+  .colchart{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; align-items:end; height:210px; border-bottom:1px solid var(--line); padding-bottom:0}
+  .cgroup{position:relative; display:flex; gap:3px; align-items:flex-end; height:100%; cursor:default}
+  .cb{flex:1; border-radius:4px 4px 0 0; min-height:3px; transition:filter .15s ease}
+  .cb.ing{background:var(--blue)}
+  .cb.gas{background:var(--red-bar)}
+  .cgroup:hover .cb{filter:brightness(1.2)}
+  .cgroup .tip{
+    display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:5;
+    background:#26212A; border:1px solid var(--line); border-radius:8px;
+    padding:8px 12px; font-size:12.5px; color:var(--ink); width:190px; line-height:1.5;
+    box-shadow:0 6px 20px rgba(0,0,0,.45); pointer-events:none; text-align:left;
+    font-variant-numeric:tabular-nums;
+  }
+  .cgroup:hover .tip{display:block}
+  .cgroup .tip b{display:block; margin-bottom:2px}
+  .cgroup .tip .tin{color:var(--blue)} .cgroup .tip .tgs{color:var(--red-bar)}
+  .cxlab{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-top:8px; text-align:center; font-size:12px; color:var(--ink3)}
+  .colchart .cgroup:first-child .tip{left:0; transform:none}
+  .colchart .cgroup:last-child .tip{left:auto; right:0; transform:none}
+
+  /* ---------- diverging chart (utilidad mensual) ---------- */
+  .divchart{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; height:220px; position:relative}
+  .dcol{display:flex; flex-direction:column; height:100%}
+  .dup{height:47%; display:flex; align-items:flex-end; justify-content:center; position:relative}
+  .ddown{height:53%; display:flex; align-items:flex-start; justify-content:center; border-top:1px solid var(--ink3); position:relative}
+  .db{width:60%; max-width:52px; min-height:3px; border-radius:4px 4px 0 0}
+  .db.pos{background:var(--blue)}
+  .db.neg{background:var(--red-bar); border-radius:0 0 4px 4px}
+  .dval{position:absolute; width:100%; text-align:center; font-size:11.5px; font-variant-numeric:tabular-nums; color:var(--ink2); line-height:1}
+  .dup .dval{bottom:calc(100% + 0px); padding-bottom:4px; bottom:auto}
+  .dvz{position:absolute; left:50%; transform:translateX(-50%); white-space:nowrap}
+  .dxlab{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-top:8px; text-align:center; font-size:12px; color:var(--ink3)}
+
+  /* ---------- horizontal bar rows ---------- */
+  .bars{display:flex; flex-direction:column; gap:10px}
+  .brow{display:grid; grid-template-columns:170px 1fr 78px; gap:10px; align-items:center; position:relative}
+  .brow .bl{font-size:13px; color:var(--ink2); line-height:1.3; text-align:right}
+  .brow .bl small{display:block; color:var(--ink3); font-size:11px}
+  .btrack{height:20px; position:relative}
+  .bfill{
+    height:14px; margin-top:3px; background:var(--red-bar);
+    border-radius:0 4px 4px 0; min-width:3px;
+    transition:filter .15s ease;
+  }
+  .bfill.dim{background:#5C4A50}
+  .bfill.blue{background:var(--blue)}
+  .brow:hover .bfill{filter:brightness(1.18)}
+  .bval{font-size:13px; font-variant-numeric:tabular-nums; color:var(--ink); text-align:right}
+  .brow .tip{
+    display:none; position:absolute; left:180px; top:-48px; z-index:5;
+    background:#26212A; border:1px solid var(--line); border-radius:8px;
+    padding:8px 12px; font-size:12.5px; color:var(--ink); max-width:340px; line-height:1.4;
+    box-shadow:0 6px 20px rgba(0,0,0,.45); pointer-events:none;
+  }
+  .brow:hover .tip{display:block}
+  @media (max-width:560px){
+    .brow{grid-template-columns:110px 1fr 62px}
+    .brow .tip{left:0}
+  }
+
+  /* ---------- dollar bar (a dónde va cada dólar) ---------- */
+  .dollarbar{display:flex; height:44px; border-radius:8px; overflow:hidden; gap:2px; background:var(--bg)}
+  .dseg{min-width:2px}
+  .dseg.s1{background:#E8474E} .dseg.s2{background:#A8555B} .dseg.s3{background:#7A5158}
+  .dseg.s4{background:#5C4A50} .dseg.s5{background:var(--blue)}
+  .dlegend{display:flex; flex-direction:column; gap:6px; margin-top:14px; font-size:13.5px; color:var(--ink2)}
+  .dlegend .dli{display:flex; justify-content:space-between; gap:12px; padding:3px 0; border-bottom:1px dashed #221D24}
+  .dlegend .dli:last-child{border-bottom:none}
+  .dlegend .dli b{color:var(--ink); font-variant-numeric:tabular-nums; white-space:nowrap}
+
+  /* ---------- table ---------- */
+  .tscroll{overflow-x:auto; margin-top:24px; border:1px solid var(--line); border-radius:12px}
+  table{border-collapse:collapse; width:100%; min-width:640px; font-size:14px; background:var(--card)}
+  th{
+    text-align:left; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink3); padding:12px 14px; border-bottom:1px solid var(--line);
+  }
+  td{padding:11px 14px; border-bottom:1px solid #221D24; vertical-align:top; color:var(--ink2)}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums; text-align:right; color:var(--ink)}
+  th.num{text-align:right}
+  td.num.neg{color:var(--red-bar)}
+  td.num.pos{color:var(--good)}
+  tr.best td{background:#1B2420}
+  tr.worst td{background:#241A1C}
+  tr.total td{border-top:1px solid var(--line); font-weight:700; color:var(--ink); background:var(--card2)}
+
+  /* ---------- finding cards ---------- */
+  .cards{display:flex; flex-direction:column; gap:14px; margin-top:24px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
+  .card .head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap}
+  .card h3{font-size:16.5px; font-weight:700; line-height:1.3}
+  .card p{color:var(--ink2); font-size:14.5px}
+  .card .ev{
+    margin-top:10px; padding:10px 14px; background:var(--card2); border-radius:8px;
+    font-size:13.5px; color:var(--ink2); border-left:3px solid var(--line);
+  }
+  .card .ev b{color:var(--ink)}
+
+  /* ---------- action plan ---------- */
+  .plan{display:flex; flex-direction:column; gap:14px; margin-top:24px}
+  .phase{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 22px}
+  .phase .ph{
+    font-style:italic; font-weight:800; text-transform:uppercase; font-size:14px;
+    color:var(--red-bar); letter-spacing:.06em; margin-bottom:12px;
+  }
+  .phase ol{list-style:none; counter-reset:step}
+  .phase li{
+    counter-increment:step; position:relative; padding:6px 0 6px 34px;
+    font-size:14.5px; color:var(--ink2);
+  }
+  .phase li b{color:var(--ink); font-weight:600}
+  .phase li::before{
+    content:counter(step); position:absolute; left:0; top:7px;
+    width:22px; height:22px; border-radius:50%; background:var(--card2); border:1px solid var(--line);
+    font-size:11px; font-weight:700; color:var(--ink2);
+    display:flex; align-items:center; justify-content:center; font-style:normal;
+  }
+
+  /* ---------- footer ---------- */
+  footer{padding:36px 0 0; font-size:13px; color:var(--ink3); line-height:1.7}
+  footer b{color:var(--ink2)}
+  a{color:var(--red-bar); text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible{outline:2px solid var(--red-bar); outline-offset:2px; border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Informe financiero · Reunión de socios</div>
+  <h1>EZ Play <span class="thin">/ 1er semestre 2026</span></h1>
+  <p class="sub">Estado de resultados enero–junio 2026 vs mismo período 2025 · Fuente: contabilidad Sage 50 · Preparado el <b>4 de julio de 2026</b></p>
+</header>
+
+<!-- ============ RESUMEN EJECUTIVO ============ -->
+<section>
+  <div class="kicker">Resumen ejecutivo</div>
+  <h2>El negocio ya se sostiene solo. Todavía no deja utilidad real.</h2>
+  <p class="lede">
+    Los ingresos del semestre <b>casi se duplicaron</b> frente al mismo período de 2025 (+83%) y pasamos de
+    pérdida marginal a utilidad positiva. Pero la utilidad es de apenas <b>~$75 al mes</b>, porque la estructura
+    de costos escala casi al mismo ritmo que las ventas: <b>cancha + árbitro se llevan 74 centavos de cada dólar</b>.
+    Crecer en partidos no cambia esa ecuación — las palancas del segundo semestre son renegociar cancha,
+    patrocinio y el torneo de agosto.
+  </p>
+  <div class="tiles">
+    <div class="tile">
+      <div class="n">$17,627</div>
+      <div class="l">Ingresos H1 2026*</div>
+      <div class="d">vs $9,612 en H1 2025 · <b style="color:var(--good)">+83%</b> año contra año</div>
+    </div>
+    <div class="tile">
+      <div class="n">$17,178</div>
+      <div class="l">Gastos H1 2026</div>
+      <div class="d">+78% vs H1 2025 · crecen casi igual que las ventas</div>
+    </div>
+    <div class="tile ok">
+      <div class="n">+$450</div>
+      <div class="l">Utilidad neta H1*</div>
+      <div class="d">vs −$20 en H1 2025 · ~$75/mes en promedio</div>
+    </div>
+    <div class="tile flag">
+      <div class="n">2.6%</div>
+      <div class="l">Margen neto</div>
+      <div class="d">De cada $100 que entran, quedan $2.60. El punto débil del negocio.</div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:18px; font-size:13.5px; color:var(--ink3)">
+    *Cifras ajustadas: a junio se le restaron <b style="color:var(--ink2)">$627 de inscripciones del torneo de agosto</b>,
+    porque son ingresos ya cobrados de un evento que aún no ocurre y que traerá sus propios gastos.
+    Sin ese ajuste, la utilidad del semestre sería $1,077. Detalle en la nota metodológica al final.
+  </p>
+</section>
+
+<!-- ============ EVOLUCION MENSUAL ============ -->
+<section>
+  <div class="kicker">Evolución mensual</div>
+  <h2>Vendemos cada vez más. Gastamos casi lo mismo que vendemos.</h2>
+  <p class="lede">
+    La tendencia de ingresos es claramente ascendente — junio fue el mejor mes en la historia del negocio,
+    incluso después del ajuste. El problema se ve en lo pegadas que van las dos barras: en ningún mes
+    los gastos se despegan de los ingresos.
+  </p>
+
+  <div class="chart">
+    <h3>Ingresos vs gastos por mes · 2026</h3>
+    <p class="note">En dólares. Junio ajustado (−$627 del torneo). Pasa el cursor sobre cada mes para ver el detalle.</p>
+    <div class="colchart" role="img" aria-label="Gráfico de columnas: ingresos y gastos por mes, enero a junio 2026. Los valores exactos están en la tabla al final de la página.">
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Enero</b><span class="tin">Ingresos $2,456.88</span><br><span class="tgs">Gastos $2,191.46</span><br>Utilidad +$265.42</div>
+        <div class="cb ing" style="height:64.2%"></div><div class="cb gas" style="height:57.3%"></div>
+      </div>
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Febrero</b><span class="tin">Ingresos $2,064.45</span><br><span class="tgs">Gastos $2,651.62</span><br>Utilidad −$587.17</div>
+        <div class="cb ing" style="height:54.0%"></div><div class="cb gas" style="height:69.3%"></div>
+      </div>
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Marzo</b><span class="tin">Ingresos $3,309.30</span><br><span class="tgs">Gastos $2,879.72</span><br>Utilidad +$429.58</div>
+        <div class="cb ing" style="height:86.5%"></div><div class="cb gas" style="height:75.3%"></div>
+      </div>
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Abril</b><span class="tin">Ingresos $2,884.84</span><br><span class="tgs">Gastos $2,612.44</span><br>Utilidad +$272.40</div>
+        <div class="cb ing" style="height:75.4%"></div><div class="cb gas" style="height:68.3%"></div>
+      </div>
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Mayo</b><span class="tin">Ingresos $3,086.39</span><br><span class="tgs">Gastos $3,273.08</span><br>Utilidad −$186.69</div>
+        <div class="cb ing" style="height:80.7%"></div><div class="cb gas" style="height:85.6%"></div>
+      </div>
+      <div class="cgroup" tabindex="0">
+        <div class="tip"><b>Junio (ajustado)</b><span class="tin">Ingresos $3,825.60</span><br><span class="tgs">Gastos $3,569.47</span><br>Utilidad +$256.13</div>
+        <div class="cb ing" style="height:100%"></div><div class="cb gas" style="height:93.3%"></div>
+      </div>
+    </div>
+    <div class="cxlab"><span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun*</span></div>
+    <div class="legendrow">
+      <span><span class="sw" style="background:var(--blue)"></span>Ingresos</span>
+      <span><span class="sw" style="background:var(--red-bar)"></span>Gastos</span>
+    </div>
+  </div>
+
+  <div class="chart">
+    <h3>Utilidad (pérdida) neta por mes · 2026</h3>
+    <p class="note">En dólares. Junio ajustado. Cuatro meses positivos, dos en rojo — ninguno se aleja mucho de cero.</p>
+    <div class="divchart" role="img" aria-label="Gráfico de barras divergentes: utilidad neta mensual enero a junio 2026. Enero +265, febrero −587, marzo +430, abril +272, mayo −187, junio ajustado +256.">
+      <div class="dcol">
+        <div class="dup"><div class="dval dvz" style="bottom:66%">+265</div><div class="db pos" style="height:61.8%"></div></div>
+        <div class="ddown"></div>
+      </div>
+      <div class="dcol">
+        <div class="dup"></div>
+        <div class="ddown"><div class="db neg" style="height:100%"></div><div class="dval dvz" style="top:calc(100% - 16px); color:#fff; font-weight:700">−587</div></div>
+      </div>
+      <div class="dcol">
+        <div class="dup"><div class="dval dvz" style="bottom:104%">+430</div><div class="db pos" style="height:100%"></div></div>
+        <div class="ddown"></div>
+      </div>
+      <div class="dcol">
+        <div class="dup"><div class="dval dvz" style="bottom:68%">+272</div><div class="db pos" style="height:63.4%"></div></div>
+        <div class="ddown"></div>
+      </div>
+      <div class="dcol">
+        <div class="dup"></div>
+        <div class="ddown"><div class="db neg" style="height:31.8%"></div><div class="dval dvz" style="top:36%">−187</div></div>
+      </div>
+      <div class="dcol">
+        <div class="dup"><div class="dval dvz" style="bottom:64%">+256</div><div class="db pos" style="height:59.6%"></div></div>
+        <div class="ddown"></div>
+      </div>
+    </div>
+    <div class="dxlab"><span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun*</span></div>
+    <div class="legendrow">
+      <span><span class="sw" style="background:var(--blue)"></span>Mes con utilidad</span>
+      <span><span class="sw" style="background:var(--red-bar)"></span>Mes con pérdida</span>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="head"><h3>¿Por qué febrero y mayo fueron negativos?</h3><span class="chip warn">Gastos puntuales</span></div>
+      <p>Ninguno de los dos meses fue malo en operación — los hundieron gastos que no se repiten cada mes.</p>
+      <div class="ev"><b>Febrero (−$587):</b> honorarios dobles ($380), impuestos anuales ($158), aviso de operación ($100) y cargos bancarios extra ($40). Además fue el único mes por debajo del punto de equilibrio en ventas.</div>
+      <div class="ev"><b>Mayo (−$187):</b> compra de uniformes ($356) y atención a clientes ($110). Sin esos gastos puntuales, el mes habría cerrado en positivo.</div>
+      <div class="ev"><b>Lección:</b> los gastos anuales (impuestos, aviso de operación, tasa única) llegan concentrados y se comen la utilidad de un mes entero. Conviene provisionarlos: apartar ~$50/mes durante todo el año.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARATIVA YoY ============ -->
+<section>
+  <div class="kicker">Año contra año</div>
+  <h2>Casi el doble de negocio que hace un año</h2>
+  <p class="lede">
+    En el primer semestre de 2025 EZ Play facturó $9,612 y perdió $20. Un año después factura
+    <b>$17,627 (+83%)</b> y gana $450. El crecimiento es real y sostenido — todo 2025 cerró con
+    $23,940 de ingresos; este año vamos camino a superarlo con holgura.
+  </p>
+  <div class="chart">
+    <h3>Ingresos del 1er semestre · 2025 vs 2026</h3>
+    <p class="note">En dólares. 2026 ajustado (−$627 del torneo de agosto).</p>
+    <div class="bars">
+      <div class="brow" tabindex="0">
+        <div class="bl">H1 2025</div>
+        <div class="btrack"><div class="bfill dim" style="width:54.5%"></div></div>
+        <div class="bval">$9,612</div>
+        <div class="tip">Ene–jun 2025: $9,611.61 de ingresos, $9,631.20 de gastos → pérdida de $19.59.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">H1 2026*</div>
+        <div class="btrack"><div class="bfill blue" style="width:100%"></div></div>
+        <div class="bval">$17,627</div>
+        <div class="tip">Ene–jun 2026 ajustado: $17,627.46 de ingresos, $17,177.79 de gastos → utilidad de $449.67.</div>
+      </div>
+    </div>
+    <div class="legendrow">
+      <span><span class="sw" style="background:#5C4A50"></span>2025</span>
+      <span><span class="sw" style="background:var(--blue)"></span>2026 (ajustado)</span>
+    </div>
+  </div>
+  <div class="tiles">
+    <div class="tile">
+      <div class="n">+83%</div>
+      <div class="l">Ingresos vs H1 2025</div>
+      <div class="d">De $9,612 a $17,627</div>
+    </div>
+    <div class="tile">
+      <div class="n">+78%</div>
+      <div class="l">Gastos vs H1 2025</div>
+      <div class="d">De $9,631 a $17,178 — crecen casi a la par</div>
+    </div>
+    <div class="tile ok">
+      <div class="n">+$469</div>
+      <div class="l">Mejora en utilidad</div>
+      <div class="d">De −$20 a +$450 en el mismo período</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESTRUCTURA DE GASTOS ============ -->
+<section>
+  <div class="kicker">Estructura de costos</div>
+  <h2>¿A dónde se va cada dólar que entra?</h2>
+  <p class="lede">
+    Esta es la foto que explica por qué el margen es tan fino. De cada dólar de ingreso,
+    <b>74 centavos se van en cancha y árbitro</b> antes de pagar cualquier otra cosa.
+    Lo que queda (26¢) tiene que cubrir tecnología, contabilidad, comisiones, marketing y equipamiento —
+    y al final sobran <b>2.6 centavos</b>.
+  </p>
+
+  <div class="chart">
+    <h3>De cada $1.00 de ingreso · H1 2026 ajustado</h3>
+    <p class="note">Distribución de los $17,627 del semestre.</p>
+    <div class="dollarbar" role="img" aria-label="Barra apilada: de cada dólar de ingreso, 57 centavos van a cancha, 17 a árbitro, 2.5 a comisiones de cobro, 21 a otros gastos y quedan 2.6 de utilidad.">
+      <div class="dseg s1" style="width:56.6%"></div>
+      <div class="dseg s2" style="width:17.1%"></div>
+      <div class="dseg s3" style="width:2.5%"></div>
+      <div class="dseg s4" style="width:21.3%"></div>
+      <div class="dseg s5" style="width:2.5%"></div>
+    </div>
+    <div class="dlegend">
+      <div class="dli"><span><span class="sw" style="background:#E8474E"></span>Alquiler de cancha</span><b>$0.57 · $9,982.80</b></div>
+      <div class="dli"><span><span class="sw" style="background:#A8555B"></span>Árbitros</span><b>$0.17 · $3,005.00</b></div>
+      <div class="dli"><span><span class="sw" style="background:#7A5158"></span>Comisiones de cobro (pasarela + Yappy)</span><b>$0.025 · $438.30</b></div>
+      <div class="dli"><span><span class="sw" style="background:#5C4A50"></span>Todo lo demás (contabilidad, app, marketing, equipo…)</span><b>$0.21 · $3,751.69</b></div>
+      <div class="dli"><span><span class="sw" style="background:var(--blue)"></span><b style="color:var(--ink)">Utilidad que queda</b></span><b>$0.026 · $449.67</b></div>
+    </div>
+  </div>
+
+  <div class="chart">
+    <h3>Gastos del semestre por categoría</h3>
+    <p class="note">Total: $17,177.79 · Pasa el cursor para ver el detalle de cada categoría.</p>
+    <div class="bars">
+      <div class="brow" tabindex="0">
+        <div class="bl">Alquiler de cancha<small>58.1% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:100%"></div></div>
+        <div class="bval">$9,983</div>
+        <div class="tip">Promedio <b>$1,664/mes</b> y subiendo con el volumen (jun: $2,224). Es la palanca #1: cada 5% de descuento son ~$500/año directo a utilidad.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Árbitros<small>17.5% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:30.1%"></div></div>
+        <div class="bval">$3,005</div>
+        <div class="tip">Promedio <b>$501/mes</b>. Crece con los partidos; junto con la cancha suma el 74% de los ingresos.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Honorarios profesionales<small>7.5% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:12.8%"></div></div>
+        <div class="bval">$1,280</div>
+        <div class="tip">Contabilidad y afines. <b>Casi 3× la utilidad del semestre.</b> Bajó a $90 en junio — si se sostiene, son ~$540/año de ahorro.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Equipamiento deportivo<small>4.2% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:7.2%"></div></div>
+        <div class="bval">$714</div>
+        <div class="tip">Uniformes $356, petos $137, insumos de partidos $110, implementos $72, shipping $29, lavandería $10.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Tecnología<small>3.8% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:6.6%"></div></div>
+        <div class="bval">$657</div>
+        <div class="tip">Servidor de la app $310 (incluye $131 en abril), PAC facturación $212, útiles de app $135.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Comisiones y banco<small>3.0% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:5.2%"></div></div>
+        <div class="bval">$523</div>
+        <div class="tip">Pasarela de pago $273, Yappy $165, cargos bancarios $84. Escala con las ventas (~2.5% de lo cobrado).</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Impuestos y legal<small>2.2% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:3.7%"></div></div>
+        <div class="bval">$370</div>
+        <div class="tip">Impuestos varios $218, aviso de operación $100, gastos legales $52. Se concentran en feb–mar.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Marketing<small>2.0% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:3.4%"></div></div>
+        <div class="bval">$337</div>
+        <div class="tip">Promedio $56/mes, con pico en junio ($133). Solo el 1.9% de los ingresos — hay espacio para invertir más si el margen lo permite.</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Atención a clientes<small>1.5% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:2.6%"></div></div>
+        <div class="bval">$261</div>
+        <div class="tip">Concentrado en enero ($106) y mayo ($110).</div>
+      </div>
+      <div class="brow" tabindex="0">
+        <div class="bl">Gastos varios<small>0.3% del gasto</small></div>
+        <div class="btrack"><div class="bfill" style="width:0.5%"></div></div>
+        <div class="bval">$47</div>
+        <div class="tip">Menudos no clasificados en las categorías anteriores.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECONOMIA UNITARIA / BREAK-EVEN ============ -->
+<section>
+  <div class="kicker">Economía del negocio</div>
+  <h2>El punto de equilibrio: $2,630 al mes</h2>
+  <p class="lede">
+    Separando los costos que dependen de cada partido (cancha, árbitro, comisiones) de los que se pagan
+    sí o sí cada mes (contabilidad, app, facturación, impuestos), el negocio queda así:
+  </p>
+  <div class="tiles">
+    <div class="tile">
+      <div class="n">23.8%</div>
+      <div class="l">Margen de contribución</div>
+      <div class="d">De cada $100 vendidos en cupos, $76 se van en cancha, árbitro y comisiones. Quedan $24 para lo fijo.</div>
+    </div>
+    <div class="tile">
+      <div class="n">~$625</div>
+      <div class="l">Gastos fijos / mes</div>
+      <div class="d">Contabilidad, servidor, facturación, impuestos, marketing y otros que no dependen del volumen.</div>
+    </div>
+    <div class="tile">
+      <div class="n">$2,630</div>
+      <div class="l">Ventas de equilibrio / mes</div>
+      <div class="d">$625 ÷ 23.8%. Por debajo de eso, el mes cierra en rojo.</div>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="head"><h3>¿Cómo nos fue contra ese equilibrio?</h3><span class="chip good">5 de 6 meses arriba</span></div>
+      <p>
+        Solo <b>febrero ($2,064)</b> quedó por debajo del umbral — y fue justamente el peor mes.
+        Desde marzo, todos los meses superan los $2,880. Con el nivel actual de ventas (~$3,300–3,800/mes),
+        el negocio genera entre <b>$160 y $290 de utilidad al mes</b> de forma estructural.
+      </p>
+      <div class="ev"><b>La regla práctica para los socios:</b> cada $100 adicionales de ventas en un mes dejan ~$24 de utilidad. Cada $100 que se le bajen a un gasto fijo (o a la cancha) van <b>directo y completos</b> a la utilidad. Por eso renegociar cancha vale más que vender más.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROYECCION ============ -->
+<section>
+  <div class="kicker">Proyección</div>
+  <h2>¿Cómo puede cerrar 2026?</h2>
+  <p class="lede">
+    Tres escenarios para el segundo semestre, usando el margen de contribución real (23.8%) y los fijos
+    actuales (~$625/mes). En 2025 el segundo semestre facturó <b>49% más</b> que el primero — si el patrón
+    se repite, el escenario alto es alcanzable. Ninguno incluye el torneo de agosto ni patrocinios.
+  </p>
+  <div class="tscroll">
+    <table>
+      <thead>
+        <tr><th>Escenario</th><th>Supuesto H2</th><th class="num">Ingresos 2026</th><th class="num">Utilidad 2026</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pt" style="color:var(--ink);font-weight:600">Conservador</span><br><span style="font-size:12.5px;color:var(--ink3)">H2 igual a H1</span></td>
+          <td>~$2,940/mes, sin crecimiento</td>
+          <td class="num">$35,255</td>
+          <td class="num">~$900</td>
+        </tr>
+        <tr>
+          <td><span class="pt" style="color:var(--ink);font-weight:600">Base</span><br><span style="font-size:12.5px;color:var(--ink3)">Se mantiene el nivel de junio</span></td>
+          <td>~$3,825/mes</td>
+          <td class="num">$40,580</td>
+          <td class="num">~$2,160</td>
+        </tr>
+        <tr>
+          <td><span class="pt" style="color:var(--ink);font-weight:600">Alto</span><br><span style="font-size:12.5px;color:var(--ink3)">Estacionalidad de 2025 (+49% en H2)</span></td>
+          <td>~$4,380/mes</td>
+          <td class="num">$43,890</td>
+          <td class="num">~$2,950</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lede" style="margin-top:16px; font-size:13.5px; color:var(--ink3)">
+    Lectura honesta: incluso en el escenario alto, la utilidad anual (~$3,000) no paga un salario.
+    El crecimiento orgánico mejora el número pero no cambia la naturaleza del negocio —
+    para eso están las recomendaciones de abajo.
+  </p>
+</section>
+
+<!-- ============ RECOMENDACIONES ============ -->
+<section>
+  <div class="kicker">Recomendaciones</div>
+  <h2>Plan para el segundo semestre</h2>
+  <p class="lede">
+    Ordenadas por impacto en utilidad y esfuerzo. Las tres primeras son las que de verdad
+    mueven la aguja; el resto protege el margen que ya existe.
+  </p>
+  <div class="plan">
+    <div class="phase">
+      <div class="ph">Prioridad alta · mueven la aguja</div>
+      <ol>
+        <li><b>Renegociar la tarifa de cancha por volumen.</b> Ya gastamos ~$1,700/mes en alquiler ($10,000 en el semestre) — somos un cliente grande. Un 10% de descuento son <b>~$2,000/año directo a utilidad</b>: más que toda la utilidad proyectada del escenario conservador. Llevar los números de este informe a la conversación.</li>
+        <li><b>Cerrar al menos un patrocinador.</b> Cada dólar de patrocinio entra casi sin costo asociado (margen ~100%, vs 24% de un cupo). Un patrocinio de $200/mes equivale a vender <b>$840/mes adicionales en cupos</b>. Con 4,500 seguidores en Instagram y partidos semanales hay inventario real que ofrecer: marca en petos/uniformes, menciones, torneos.</li>
+        <li><b>Tratar el torneo de agosto como un negocio aparte.</b> Ya entraron $627 de inscripciones que este informe excluye a propósito. Definir presupuesto propio (cancha, árbitros, premios, hidratación) <b>antes</b> de gastar, y medir su P&amp;L por separado. Si el torneo deja mejor margen que un partido regular, es un formato a repetir; si no, se ajusta el precio de inscripción del próximo.</li>
+      </ol>
+    </div>
+    <div class="phase">
+      <div class="ph">Prioridad media · protegen el margen</div>
+      <ol>
+        <li><b>Sostener los honorarios en el nivel de junio ($90/mes).</b> El semestre cerró en $1,280 — casi 3× la utilidad. Si el nuevo nivel se mantiene, son ~$540/año de ahorro. (La automatización contable con Sage va en esta dirección.)</li>
+        <li><b>Provisionar los gastos anuales.</b> Impuestos, aviso de operación y tasa única llegan concentrados (feb–mar y diciembre) y hunden el mes. Apartar ~$50/mes en una subcuenta evita los sustos y da una foto mensual real.</li>
+        <li><b>Revisar el precio del cupo o el mix de cancha.</b> Con margen de contribución de 23.8%, subir $0.50 el cupo promedio (o conseguir horarios de cancha más baratos en horas valle) tiene efecto inmediato. Sensibilidad: +5% de precio ≈ <b>+$880/año de utilidad</b> si el volumen se mantiene.</li>
+      </ol>
+    </div>
+    <div class="phase">
+      <div class="ph">Higiene financiera · para decidir mejor</div>
+      <ol>
+        <li><b>Registrar los cobros anticipados como ingreso diferido.</b> Los $627 del torneo deberían ir a una cuenta de pasivo en Sage y reconocerse en agosto contra sus gastos. Así el estado de resultados de cada mes cuenta la verdad.</li>
+        <li><b>Meta compartida entre socios para H2:</b> ventas ≥ $3,500/mes (nivel junio), gasto fijo ≤ $625/mes, y cerrar el año con ≥ $2,000 de utilidad + 1 patrocinador firmado. Revisar contra este tablero cada cierre de mes.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TABLA COMPLETA ============ -->
+<section>
+  <div class="kicker">Anexo</div>
+  <h2>Detalle mes a mes</h2>
+  <p class="lede">Los mismos datos de los gráficos, en tabla. Junio se muestra ajustado; entre paréntesis, el valor sin ajuste.</p>
+  <div class="tscroll">
+    <table>
+      <thead>
+        <tr><th>Mes</th><th class="num">Ingresos</th><th class="num">Gastos</th><th class="num">Utilidad neta</th><th class="num">Margen</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Enero</td><td class="num">$2,456.88</td><td class="num">$2,191.46</td><td class="num pos">+$265.42</td><td class="num">10.8%</td></tr>
+        <tr class="worst"><td>Febrero</td><td class="num">$2,064.45</td><td class="num">$2,651.62</td><td class="num neg">−$587.17</td><td class="num">−28.4%</td></tr>
+        <tr class="best"><td>Marzo</td><td class="num">$3,309.30</td><td class="num">$2,879.72</td><td class="num pos">+$429.58</td><td class="num">13.0%</td></tr>
+        <tr><td>Abril</td><td class="num">$2,884.84</td><td class="num">$2,612.44</td><td class="num pos">+$272.40</td><td class="num">9.4%</td></tr>
+        <tr><td>Mayo</td><td class="num">$3,086.39</td><td class="num">$3,273.08</td><td class="num neg">−$186.69</td><td class="num">−6.0%</td></tr>
+        <tr><td>Junio* <span class="pd">(sin ajuste: $4,452.60)</span></td><td class="num">$3,825.60</td><td class="num">$3,569.47</td><td class="num pos">+$256.13</td><td class="num">6.7%</td></tr>
+        <tr class="total"><td>Total H1 2026*</td><td class="num">$17,627.46</td><td class="num">$17,177.79</td><td class="num pos">+$449.67</td><td class="num">2.6%</td></tr>
+        <tr><td>Total H1 2025 <span class="pd">(referencia)</span></td><td class="num">$9,611.61</td><td class="num">$9,631.20</td><td class="num neg">−$19.59</td><td class="num">−0.2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="legendrow">
+    <span><span class="sw" style="background:#1B2420"></span>Mejor mes</span>
+    <span><span class="sw" style="background:#241A1C"></span>Peor mes</span>
+  </div>
+</section>
+
+<!-- ============ NOTA METODOLOGICA ============ -->
+<section>
+  <div class="kicker">Nota metodológica</div>
+  <h2>De dónde salen estos números</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Fuentes y ajustes</h3>
+      <p>
+        Datos tomados de los estados de resultados generados en <b>Sage 50</b> (cierre de junio 2026 y cierre
+        de diciembre 2025), alimentados por la conciliación mensual de las tres cuentas bancarias.
+      </p>
+      <div class="ev"><b>Ajuste del torneo:</b> a los ingresos de junio se les restaron <b>$627</b> correspondientes a inscripciones del torneo de agosto 2026. Son dinero ya cobrado, pero de un evento que aún no ocurre y que tendrá sus propios gastos (cancha, árbitros, premios). Incluirlos inflaría la utilidad del semestre con plata que todavía no está ganada. En los libros, lo correcto es tratarlos como <b>ingreso diferido (pasivo)</b> y reconocerlos en agosto.</div>
+      <div class="ev"><b>Sin ajuste</b>, el semestre cerraría con $18,254.46 de ingresos y $1,076.67 de utilidad (margen 5.9%).</div>
+      <div class="ev"><b>Ingresos por intereses</b> de la cuenta de ahorro ($2.05 en el semestre) están incluidos en los totales pero son inmateriales.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><b>Informe financiero EZ Play · 1er semestre 2026.</b> Preparado con la contabilidad oficial de Sage 50 para revisión entre socios. Cifras en dólares (USD/PAB). Este documento es interno y no constituye estados financieros auditados.</p>
+</footer>
+
+</div>
+</body>
+</html>
